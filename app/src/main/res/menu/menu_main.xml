@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.myapplication.MainActivity"
+    >
+    <item
+        android:id="@+id/action_setting"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="Setting"
+        />
+
+    <item
+        android:id="@+id/action_setting2"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="Setting 2"
+        />
+
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:title="Searching"
+        android:icon="@drawable/baseline_search_24"
+        />
+</menu>
