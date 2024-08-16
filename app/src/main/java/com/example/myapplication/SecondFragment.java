@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,9 +31,9 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LinearLayout containerNotes = binding.containerNotes; // Access LinearLayout from binding
+        LinearLayout containerNotes = binding.containerNotes; // Access LinearLayout from binding, id bên file xml được đặt theo snack_case, nhưng bên đây thì truy cập theo kiểu camalCase
 
-        for (int i = 1; i <= 6; i++) {
+        for (int i = 1; i <= 2; i++) {
             // Create the outer LinearLayout
             LinearLayout itemLayout = new LinearLayout(getContext());
             LinearLayout.LayoutParams itemLayoutParams = new LinearLayout.LayoutParams(
@@ -69,6 +70,7 @@ public class SecondFragment extends Fragment {
             // Add the item layout to the container
             containerNotes.addView(itemLayout);
         }
+
     }
 
     @Override
@@ -81,4 +83,5 @@ public class SecondFragment extends Fragment {
     private int dpToPx(int dp) {
         return Math.round(dp * getResources().getDisplayMetrics().density);
     }
+
 }
