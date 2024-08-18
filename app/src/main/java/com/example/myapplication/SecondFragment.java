@@ -1,18 +1,24 @@
 package com.example.myapplication;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.databinding.FragmentSecondBinding;
+
+import java.util.Map;
 
 public class SecondFragment extends Fragment {
 
@@ -71,6 +77,16 @@ public class SecondFragment extends Fragment {
             containerNotes.addView(itemLayout);
         }
 
+        showAllData();
+
+        Button saveButton = view.findViewById(R.id.button_add);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle the button click here
+                saveNote(view);
+            }
+        });
     }
 
     @Override
@@ -83,5 +99,67 @@ public class SecondFragment extends Fragment {
     private int dpToPx(int dp) {
         return Math.round(dp * getResources().getDisplayMetrics().density);
     }
+
+    private void saveNote(View view) {
+        // Get the text from the EditTexts
+        EditText titleEditText = view.findViewById(R.id.note_edit_text_title);
+        EditText noteEditText = view.findViewById(R.id.note_edit_text);
+
+        String noteTitle = titleEditText.getText().toString();
+        String noteContent = noteEditText.getText().toString();
+
+        // Save the note using SharedPreferences
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyNotes", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // Save the note with a unique key (you can change the key to something dynamic if needed)
+        editor.putString("note_title", noteTitle);
+        editor.putString("note_content", noteContent);
+
+        // Commit the changes
+        editor.apply();
+
+        // Notify the user
+        Toast.makeText(getContext(), "Note saved!", Toast.LENGTH_SHORT).show();
+        loadNote(view);
+    }
+
+    private void loadNote(View view) {
+        // Get the EditTexts
+//        EditText titleEditText = view.findViewById(R.id.note_edit_text_title);
+//        EditText noteEditText = view.findViewById(R.id.note_edit_text);
+
+        // Load the note using SharedPreferences
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("MyNotes", Context.MODE_PRIVATE);
+        String noteTitle = sharedPreferences.getString("note_title", "");
+        String noteContent = sharedPreferences.getString("note_content", "");
+
+        // Set the text in the EditTexts
+//        titleEditText.setText(noteTitle);
+//        noteEditText.setText(noteContent);
+    }
+
+    private void showAllData() {
+        // Retrieve the SharedPreferences object
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyNotes", Context.MODE_PRIVATE);
+
+        // Get all key-value pairs
+        Map<String, ?> allEntries = sharedPreferences.getAll();
+
+        // Iterate through all entries and display them
+        StringBuilder dataBuilder = new StringBuilder();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            dataBuilder.append(entry.getKey()).append(": ").append(entry.getValue().toString()).append("\n");
+        }
+
+        // Display the data using a Toast or in a TextView
+        if (dataBuilder.length() > 0) {
+            Toast.makeText(getContext(), dataBuilder.toString(), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getContext(), "No data found in SharedPreferences", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
 }
